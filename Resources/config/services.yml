@@ -1,0 +1,26 @@
+services:
+
+    social_network_cache:
+        class: Doctrine\Common\Cache\FilesystemCache
+        public: false
+        arguments: ["%kernel.cache_dir%"]
+
+    social_network_helper:
+      class: Youshido\SocialNetworksBundle\Service\SocialNetworkHelper
+      arguments: ["@social_networks.factory", "@social_networks.om", "%social_networks.models%"]
+
+    social_provider.abstract:
+      class: Youshido\SocialNetworksBundle\Service\Provider\AbstractSocialProvider
+      abstract: true
+      calls:
+        - [ "setRouter", ["@router"] ]
+        - [ "setParameters", ["%social_networks.web_host%"] ]
+
+    social_provider.facebook:
+        class: Youshido\SocialNetworksBundle\Service\Provider\FacebookProvider
+        parent: "social_provider.abstract"
+
+    social_provider.twitter:
+        class: Youshido\SocialNetworksBundle\Service\Provider\TwitterProvider
+        arguments: ["@social_network_cache"]
+        parent: "social_provider.abstract"
