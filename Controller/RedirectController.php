@@ -19,7 +19,6 @@ class RedirectController extends Controller
         /** @var Container $container */
         $container = $this->container;
         $data = $container->get('social_network_helper')->getUserFromRequest($type, $code);
-        dump($data);
 
         return new JsonResponse([
             'type' => $type,
