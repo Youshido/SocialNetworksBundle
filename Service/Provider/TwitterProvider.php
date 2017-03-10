@@ -61,7 +61,7 @@ class TwitterProvider extends AbstractSocialProvider
 
         $user = $this->client->get("account/verify_credentials", ['include_email' => true, 'skip_status' => true, 'include_entities' => false]);
 
-        return new SocialAccountInfo($user->name, null, $user->email, isset($user->profile_image_url) ? $user->profile_image_url : null, [
+        return new SocialAccountInfo($user->name, null, empty($user->email) ? null : $user->email, isset($user->profile_image_url) ? $user->profile_image_url : null, [
             'id'          => $user->id,
             'accessToken' => $accessToken
         ]);
