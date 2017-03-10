@@ -58,7 +58,7 @@ class FacebookProvider extends AbstractSocialProvider
             $profile->getLastName(),
             $profile->getEmail(),
             $profile->getPicture()->getUrl(),
-            ['accessToken' => $accessToken->getValue()]
+            $accessToken->getValue()
         );
     }
 }

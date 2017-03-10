@@ -60,10 +60,8 @@ class TwitterProvider extends AbstractSocialProvider
         $this->client->setOauthToken($accessToken['oauth_token'], $accessToken['oauth_token_secret']);
 
         $user = $this->client->get("account/verify_credentials", ['include_email' => true, 'skip_status' => true, 'include_entities' => false]);
+        $names = explode(' ', $user->name);
 
-        return new SocialAccountInfo($user->name, null, empty($user->email) ? null : $user->email, isset($user->profile_image_url) ? $user->profile_image_url : null, [
-            'id'          => $user->id,
-            'accessToken' => $accessToken
-        ]);
+        return new SocialAccountInfo($user->id, $names[0], empty($names[1]) ? null : $names[1], empty($user->email) ? null : $user->email, isset($user->profile_image_url) ? $user->profile_image_url : null, $accessToken['oauth_token']);
     }
 }

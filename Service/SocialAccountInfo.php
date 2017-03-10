@@ -45,8 +45,8 @@ class SocialAccountInfo
         $this->firstName   = $firstName;
         $this->lastName    = $lastName;
         $this->email       = $email;
-        $this->accessToken = $accessToken;
         $this->imageUrl    = $imageUrl;
+        $this->accessToken = $accessToken;
     }
 
     /**
