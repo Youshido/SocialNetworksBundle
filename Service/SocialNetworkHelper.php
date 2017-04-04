@@ -87,7 +87,7 @@ class SocialNetworkHelper
     {
         if (!$socialAccount->getUser()) {
 
-            $user = $this->om->getRepository($this->userModel)->findOneBy(['email' => $socialAccount->getEmail()]);
+            $user = $socialAccount->getEmail() ? $this->om->getRepository($this->userModel)->findOneBy(['email' => $socialAccount->getEmail()]) : null;
             if (!$user) {
                 /** @var SocialableUserInterface $user */
                 $user = new $this->userModel();
