@@ -64,7 +64,7 @@ class SocialNetworkHelper
 
         /** @var AbstractSocialAccount $socialAccount */
         $socialAccount = $this->om->getRepository($this->socialAccountModel)->findOneBy([
-            'socialId' => $info->getId(),
+            'socialId' => (string)$info->getId(),
             'provider' => $providerType
         ]);
 
