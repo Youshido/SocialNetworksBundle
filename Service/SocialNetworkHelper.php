@@ -75,11 +75,12 @@ class SocialNetworkHelper
             $socialAccount->setFirstName($info->getFirstName());
             $socialAccount->setLastName($info->getLastName());
             $socialAccount->setEmail($info->getEmail());
-            $socialAccount->setImageUrl($info->getImageUrl());
-
-            $this->om->persist($socialAccount);
-            $this->om->flush();
         }
+        $socialAccount->setImageUrl($info->getImageUrl());
+
+        $this->om->persist($socialAccount);
+        $this->om->flush();
+
         return $socialAccount;
     }
 
