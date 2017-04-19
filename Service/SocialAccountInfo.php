@@ -29,6 +29,15 @@ class SocialAccountInfo
     /** @var  string */
     private $imageUrl;
 
+    /** @var  string */
+    private $location;
+
+    /** @var string */
+    private $gender;
+
+    /** @var  mixed */
+    private $additionalInfo;
+
     /**
      * UserInfoDTO constructor.
      *
@@ -95,4 +104,64 @@ class SocialAccountInfo
     {
         return $this->imageUrl;
     }
+
+    /**
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param string $location
+     * @return SocialAccountInfo
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getAdditionalInfo()
+    {
+        return $this->additionalInfo;
+    }
+
+    /**
+     * @param mixed $additionalInfo
+     * @return SocialAccountInfo
+     */
+    public function setAdditionalInfo($additionalInfo)
+    {
+        $this->additionalInfo = $additionalInfo;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    }
+
+
+
+
 }

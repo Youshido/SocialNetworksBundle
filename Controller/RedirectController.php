@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class RedirectController extends Controller
 {
@@ -16,13 +17,13 @@ class RedirectController extends Controller
         $type = $request->get('type');
         $code = $request->query->has('code') ? $request->get('code') : ($request->query->has('oauth_verifier') ? $request->query->get('oauth_verifier') : null);
 
-        /** @var Container $container */
-        $container = $this->container;
-        $data = $container->get('social_network_helper')->getUserFromRequest($type, $code);
-
-        return new JsonResponse([
-            'type' => $type,
-            'code' => $code
-        ]);
+        $data = json_encode(['type' => $type, 'code' => $code]);
+        return new Response(<<<DATA
+        <script>
+        window.opener && window.opener.postMessage(JSON.stringify({$data}), '*');
+        window.close();
+        </script>
+DATA
+);
     }
 }
