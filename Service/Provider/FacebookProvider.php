@@ -49,10 +49,10 @@ class FacebookProvider extends AbstractSocialProvider
         $oAuth2Client = $this->client->getOAuth2Client();
         $accessToken  = $oAuth2Client->getAccessTokenFromCode($authCode, $this->generateAuthRedirectUrl());
 
-        $response = $this->client->get('/me?fields=first_name,last_name,email,picture.type(large)', $accessToken);
+        $response = $this->client->get('/me?fields=first_name,last_name,email,picture.type(large),gender', $accessToken);
         $profile  = $response->getGraphUser();
 
-        return new SocialAccountInfo(
+        $socialInfo = new SocialAccountInfo(
             $profile->getId(),
             $profile->getFirstName(),
             $profile->getLastName(),
@@ -60,5 +60,9 @@ class FacebookProvider extends AbstractSocialProvider
             $profile->getPicture()->getUrl(),
             $accessToken->getValue()
         );
+        $socialInfo->setGender($profile->getGender());
+        $socialInfo->setAdditionalInfo($profile);
+
+        return $socialInfo;
     }
 }
