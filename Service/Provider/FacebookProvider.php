@@ -49,7 +49,7 @@ class FacebookProvider extends AbstractSocialProvider
         $oAuth2Client = $this->client->getOAuth2Client();
         $accessToken  = $oAuth2Client->getAccessTokenFromCode($authCode, $this->generateAuthRedirectUrl());
 
-        $response = $this->client->get('/me?fields=first_name,last_name,email,picture.type(large),gender', $accessToken);
+        $response = $this->client->get('/me?fields=first_name,last_name,email,picture.type(large),gender,age_range', $accessToken);
         $profile  = $response->getGraphUser();
 
         $socialInfo = new SocialAccountInfo(

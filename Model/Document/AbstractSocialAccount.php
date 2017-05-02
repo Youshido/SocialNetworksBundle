@@ -7,6 +7,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\Field;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\Id;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
 use Youshido\SocialNetworksBundle\Model\SocialableUserInterface;
+use Youshido\SocialNetworksBundle\Service\SocialAccountInfo;
 
 /**
  * @Document(collection="social_accounts")
@@ -49,6 +50,9 @@ abstract class AbstractSocialAccount
      * @Field(type="string")
      */
     protected $imageUrl;
+
+    /** @var  SocialAccountInfo */
+    protected $rawSocialInfo;
 
     /**
      * @return string
@@ -175,6 +179,25 @@ abstract class AbstractSocialAccount
     public function setImageUrl($imageUrl)
     {
         $this->imageUrl = $imageUrl;
+        return $this;
+    }
+
+    /**
+     * @return SocialAccountInfo
+     */
+    public function getRawSocialInfo()
+    {
+        return $this->rawSocialInfo;
+    }
+
+    /**
+     * @param SocialAccountInfo $rawSocialInfo
+     * @return AbstractSocialAccount
+     */
+    public function setRawSocialInfo($rawSocialInfo)
+    {
+        $this->rawSocialInfo = $rawSocialInfo;
+
         return $this;
     }
 

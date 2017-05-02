@@ -76,6 +76,7 @@ class SocialNetworkHelper
             $socialAccount->setLastName($info->getLastName());
             $socialAccount->setEmail($info->getEmail());
         }
+        $socialAccount->setRawSocialInfo($info);
         $socialAccount->setImageUrl($info->getImageUrl());
 
         $this->om->persist($socialAccount);
