@@ -40,7 +40,7 @@ class TwitterProvider extends AbstractSocialProvider
 
         $this->cache->save(self::SESSION_KEY_AUTH_DATA, $tokenInfo);
 
-        return $this->client->url("oauth/authorize", ["oauth_token" => $tokenInfo['oauth_token']]);
+        return $this->client->url("oauth/authenticate", ["oauth_token" => $tokenInfo['oauth_token']]);
     }
 
     /**
