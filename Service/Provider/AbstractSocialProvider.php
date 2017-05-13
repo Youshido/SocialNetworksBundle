@@ -21,10 +21,15 @@ abstract class AbstractSocialProvider
 
     /**
      * @param $authCode
-     *
      * @return SocialAccountInfo
      */
-    abstract public function getUserInfo($authCode);
+    abstract public function getUserInfoWithAuthCode($authCode);
+
+    /**
+     * @param $accessToken
+     * @return SocialAccountInfo
+     */
+    abstract public function getUserInfoWithAccessToken($accessToken);
 
     /**
      * @return string

@@ -55,34 +55,33 @@ class SocialNetworkHelper
      */
     public function processCode($providerType, $code)
     {
-        return $this->providerFactory->getProvider($providerType)->getUserInfo($code);
+        return $this->providerFactory->getProvider($providerType)->getUserInfoWithAuthCode($code);
     }
 
-    public function persistSocialAccount($providerType, $code)
+    public function processAccessToken($providerType, $accessToken)
+    {
+        return $this->providerFactory->getProvider($providerType)->getUserInfoWithAccessToken($accessToken);
+
+    }
+
+    public function persistSocialAccountFromCode($providerType, $code)
     {
         $info = $this->processCode($providerType, $code);
 
         /** @var AbstractSocialAccount $socialAccount */
-        $socialAccount = $this->om->getRepository($this->socialAccountModel)->findOneBy([
-            'socialId' => (string)$info->getId(),
-            'provider' => $providerType
-        ]);
+        return $this->persistSocialAccount($providerType, $info);
+    }
 
-        if (!$socialAccount) {
-            $socialAccount = new $this->socialAccountModel;
-            $socialAccount->setSocialId($info->getId());
-            $socialAccount->setProvider($providerType);
-            $socialAccount->setFirstName($info->getFirstName());
-            $socialAccount->setLastName($info->getLastName());
-            $socialAccount->setEmail($info->getEmail());
-        }
-        $socialAccount->setRawSocialInfo($info);
-        $socialAccount->setImageUrl($info->getImageUrl());
+    /**
+     * @param $providerType
+     * @param $accessToken
+     * @return AbstractSocialAccount
+     */
+    public function persistSocialAccountFromAccessToken($providerType, $accessToken)
+    {
+        $info = $this->processAccessToken($providerType, $accessToken);
 
-        $this->om->persist($socialAccount);
-        $this->om->flush();
-
-        return $socialAccount;
+        return $this->persistSocialAccount($providerType, $info);
     }
 
     public function ensureUserForSocialAccount(AbstractSocialAccount $socialAccount)
@@ -106,7 +105,37 @@ class SocialNetworkHelper
 
     public function getUserFromRequest($providerType, $code)
     {
-        $socialAccount = $this->persistSocialAccount($providerType, $code);
+        $socialAccount = $this->persistSocialAccountFromCode($providerType, $code);
         return $this->ensureUserForSocialAccount($socialAccount);
+    }
+
+    /**
+     * @param $providerType
+     * @param $info
+     * @return AbstractSocialAccount|null
+     */
+    public function persistSocialAccount($providerType, $info)
+    {
+        $socialAccount = $this->om->getRepository($this->socialAccountModel)->findOneBy([
+            'socialId' => (string)$info->getId(),
+            'provider' => $providerType
+        ]);
+
+        if (!$socialAccount) {
+            /** @var AbstractSocialAccount $socialAccount */
+            $socialAccount = new $this->socialAccountModel;
+            $socialAccount->setSocialId($info->getId());
+            $socialAccount->setProvider($providerType);
+            $socialAccount->setFirstName($info->getFirstName());
+            $socialAccount->setLastName($info->getLastName());
+            $socialAccount->setEmail($info->getEmail());
+        }
+        $socialAccount->setRawSocialInfo($info);
+        $socialAccount->setImageUrl($info->getImageUrl());
+
+        $this->om->persist($socialAccount);
+        $this->om->flush();
+
+        return $socialAccount;
     }
 }

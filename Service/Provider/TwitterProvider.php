@@ -51,7 +51,12 @@ class TwitterProvider extends AbstractSocialProvider
         return 'twitter';
     }
 
-    public function getUserInfo($authCode)
+    public function getUserInfoWithAccessToken($accessToken)
+    {
+        throw new \Exception('This feature is not support by twitter');
+    }
+
+    public function getUserInfoWithAuthCode($authCode)
     {
         $tokenInfo = $this->cache->fetch(self::SESSION_KEY_AUTH_DATA);
         $this->client->setOauthToken($tokenInfo['oauth_token'], $tokenInfo['oauth_token_secret']);
@@ -59,7 +64,7 @@ class TwitterProvider extends AbstractSocialProvider
         $accessToken = $this->client->oauth("oauth/access_token", ["oauth_verifier" => $authCode]);
         $this->client->setOauthToken($accessToken['oauth_token'], $accessToken['oauth_token_secret']);
 
-        $user = $this->client->get("account/verify_credentials", ['include_email' => true, 'skip_status' => true, 'include_entities' => true]);
+        $user = $this->client->get("account/verify_credentials", ['include_email' => "true", 'skip_status' => "true", 'include_entities' => "true"]);
         $name = explode(' ', $user->name);
 
         $socialInfo = new SocialAccountInfo(
