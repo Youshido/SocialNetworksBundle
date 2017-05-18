@@ -35,6 +35,7 @@ class Configuration implements ConfigurationInterface
                             ->children()
                                 ->scalarNode('app_id')->cannotBeEmpty()->end()
                                 ->scalarNode('app_secret')->cannotBeEmpty()->end()
+                                ->scalarNode('fields')->end()
                             ->end()
                         ->end()
                         ->arrayNode('twitter')
